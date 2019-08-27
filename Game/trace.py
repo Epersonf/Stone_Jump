@@ -1,4 +1,4 @@
-from PPlay.sprite import *
+from Game.PPlay.sprite import *
 
 class Trace:
 
@@ -13,7 +13,8 @@ class Trace:
     char = None
     obj = None
 
-    def trace_distance(self):
+    @staticmethod
+    def trace_distance():
         return 70
 
     def __init__(self, img_name, char_main):
@@ -31,7 +32,8 @@ class Trace:
             self.y_speed = 0
 
     def hit_side(self):
-        self.x_speed = -(self.x_speed/2)
+        if not self.char.grab_mode:
+            self.x_speed = -(self.x_speed / 2)
 
     def set_speed(self, new_spd_x, new_spd_y):
         self.x_speed = new_spd_x

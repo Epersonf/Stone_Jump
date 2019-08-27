@@ -1,4 +1,4 @@
-from PPlay.sprite import *
+from Game.PPlay.sprite import *
 from random import randint
 
 class Ground:
@@ -30,7 +30,7 @@ class Ground:
         elif self.char.obj.collided(self.obj):
             self.char.hit_side()
 
-
+        #warning
         if self.obj.y < -self.obj.height:
             self.arrow.x = self.obj.x
             self.arrow.y = self.arrow.height

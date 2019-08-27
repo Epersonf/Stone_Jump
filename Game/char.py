@@ -1,8 +1,9 @@
-from PPlay.sprite import *
+from Game.PPlay.sprite import *
 
 class Char:
     jumping = False
     touching = False
+    grab_mode = False
 
     x_speed = 0
     y_speed = 0
@@ -10,8 +11,15 @@ class Char:
     gravity = 0.01
 
     obj = None
-    def __init__(self, image_file):
+    level_manager = None
+    gui = None
+    mouse = None
+
+    def __init__(self, image_file, level, gui_main):
         self.obj = Sprite(image_file)
+        self.level_manager = level
+        self.gui = gui_main
+        self.mouse = self.gui.get_mouse()
 
     def jump(self, jump_force_x, jump_force_y):
         if self.jumping:
@@ -30,8 +38,15 @@ class Char:
         if self.y_speed < 0:
             self.y_speed = 0
 
+    touching_wall = False
+
     def hit_side(self):
-        self.x_speed = -(self.x_speed/2)
+        if not self.grab_mode:
+            self.x_speed = -(self.x_speed / 2)
+            if self.touching_wall:
+                self.y_speed = -abs(self.y_speed)/2
+        else:
+            self.touching_wall = True
 
     def set_speed(self, new_spd_x, new_spd_y):
         self.x_speed = new_spd_x
@@ -42,6 +57,12 @@ class Char:
         self.obj.move_x(self.x_speed)
         self.obj.move_y(self.y_speed)
 
+        #grab_mode
+        if self.mouse.is_button_pressed(0):
+            self.grab_mode = True
+        else:
+            self.grab_mode = False
+
         #reflection
         if self.obj.x < 0 or self.obj.x > 1024 - self.obj.width:
             self.hit_side()
@@ -49,11 +70,13 @@ class Char:
                 self.obj.x = 0
             else:
                 self.obj.x = 1024 - self.obj.width
+        else:
+            self.touching_wall = False
 
 
         #gameover
         if self.obj.y >= 768:
-            exit(0)
+            self.level_manager[0] = 2
 
         self.obj.draw()
 
