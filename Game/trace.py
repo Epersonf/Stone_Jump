@@ -39,12 +39,10 @@ class Trace:
         self.x_speed = new_spd_x
         self.y_speed = new_spd_y
 
-
-
-
     def draw_trace(self, jump_force_x, jump_force_y, loops):
         if self.char.jumping or not self.char.touching:
-            return
+            if not self.char.grab_mode or self.char.did_grab:
+                return
         self.obj.x = self.char.obj.x + self.char.obj.width/2 - self.obj.width/2
         self.obj.y = self.char.obj.y
         self.x_speed = jump_force_x

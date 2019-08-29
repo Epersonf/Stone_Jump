@@ -4,6 +4,7 @@ class Char:
     jumping = False
     touching = False
     grab_mode = False
+    did_grab = False
 
     x_speed = 0
     y_speed = 0
@@ -29,6 +30,7 @@ class Char:
         self.jumping = True
 
     def hit_up(self):
+        self.did_grab = False
         self.x_speed = 0
         self.y_speed = 0
         self.jumping = False
@@ -41,11 +43,16 @@ class Char:
     touching_wall = False
 
     def hit_side(self):
-        if not self.grab_mode:
+        if not self.grab_mode and not self.did_grab:
             self.x_speed = -(self.x_speed / 2)
             if self.touching_wall:
-                self.y_speed = -abs(self.y_speed)/2
+                #release_btn while
+                self.jumping = False
+                self.did_grab = True
+                self.jump(self.mouse.get_position()[0] - self.obj.x, -abs(self.mouse.get_position()[1] - self.obj.y))
+                self.touching_wall = False
         else:
+            self.y_speed = 0.4
             self.touching_wall = True
 
     def set_speed(self, new_spd_x, new_spd_y):
@@ -72,7 +79,6 @@ class Char:
                 self.obj.x = 1024 - self.obj.width
         else:
             self.touching_wall = False
-
 
         #gameover
         if self.obj.y >= 768:
