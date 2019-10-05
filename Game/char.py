@@ -1,4 +1,5 @@
 from Game.PPlay.sprite import *
+from Game.PPlay.gameimage import *
 
 class Char:
     jumping = False
@@ -15,17 +16,29 @@ class Char:
     level_manager = None
     gui = None
     mouse = None
+    selected_anim = 0
+    anim = None
 
     def __init__(self, image_file, level, gui_main):
         self.obj = Sprite(image_file)
         self.level_manager = level
         self.gui = gui_main
         self.mouse = self.gui.get_mouse()
+        self.anim = [GameImage("Assets/Char_Stand.png"),
+                     GameImage("Assets/Char_Left.png"),
+                     GameImage("Assets/Char_Right.png"),
+                     GameImage("Assets/Char_Left_Grabbing.png"),
+                     GameImage("Assets/Char_Right_Grabbing.png")]
+
 
     def jump(self, jump_force_x, jump_force_y):
         if self.jumping:
             return
         self.x_speed = (jump_force_x/280)
+        if self.x_speed > 0:
+            self.selected_anim = 2
+        else:
+            self.selected_anim = 1
         self.y_speed = -(abs(jump_force_y)/140)
         self.jumping = True
 
@@ -35,6 +48,7 @@ class Char:
         self.y_speed = 0
         self.jumping = False
         self.touching = True
+        self.selected_anim = 0
 
     def hit_down(self):
         if self.y_speed < 0:
@@ -54,6 +68,10 @@ class Char:
         else:
             self.y_speed = 0.4
             self.touching_wall = True
+            if self.x_speed > 0:
+                self.selected_anim = 4
+            else:
+                self.selected_anim = 3
 
     def set_speed(self, new_spd_x, new_spd_y):
         self.x_speed = new_spd_x
@@ -61,8 +79,8 @@ class Char:
 
     def draw_char(self):
         self.y_speed += self.gravity
-        self.obj.move_x(self.x_speed)
-        self.obj.move_y(self.y_speed)
+        self.obj.x += (self.x_speed) * self.gui.delta_time() * 1300
+        self.obj.y += (self.y_speed) * self.gui.delta_time() * 1300
 
         #grab_mode
         if self.mouse.is_button_pressed(0):
@@ -83,6 +101,10 @@ class Char:
         #gameover
         if self.obj.y >= 768:
             self.level_manager[0] = 2
+
+        self.anim[self.selected_anim].x = self.obj.x
+        self.anim[self.selected_anim].y = self.obj.y
+        self.anim[self.selected_anim].draw()
 
         self.obj.draw()
 

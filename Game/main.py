@@ -21,7 +21,7 @@ trace = Trace("Assets/Trace.png", char)
 grounds_initial_qt = 8
 GROUNDS = [None]*grounds_initial_qt
 for i in range(grounds_initial_qt):
-    GROUNDS[i] = Ground("Assets/Ground_1.png", char, mouse, GROUNDS, "Assets/Arrow.png")
+    GROUNDS[i] = Ground("Assets/Ground_1.png", char, mouse, GROUNDS, "Assets/Arrow.png", gui)
     if i == 0:
         GROUNDS[i].obj.set_position(1024/2-GROUNDS[i].obj.width/2, 768/2 + 200)
     elif i == 1:

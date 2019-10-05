@@ -10,16 +10,18 @@ class Ground:
     mouse = None
     arrow = None
     GROUNDS = None
-    def __init__(self, img_obj, c, d, e, img_arrow):
+    gui = None
+    def __init__(self, img_obj, c, d, e, img_arrow, g):
         self.obj = Sprite(img_obj)
         self.char = c
         self.mouse = d
         self.GROUNDS = e
         self.arrow = Sprite(img_arrow)
+        self.gui = g
 
     def draw_ground(self):
 
-        self.obj.move_y(self.speed)
+        self.obj.y += (self.speed) * self.gui.delta_time() * 1300
 
         #collision
         if self.char.obj.collided(self.obj) and self.obj.x + self.obj.width > self.char.obj.x > self.obj.x - self.obj.width:
