@@ -6,7 +6,7 @@ from Game.gameover import *
 level = [0]
 
 gui = Window(1024, 768)
-gui.set_title("Game")
+gui.set_title("Stone Jump")
 game = Game_itself(gui, level)
 main_menu = Main_menu(gui, level, game)
 gameover_menu = Gameover(gui, level, game)
