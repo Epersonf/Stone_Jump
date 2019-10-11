@@ -2,7 +2,7 @@ from Game.PPlay.sprite import *
 from Game.PPlay.gameimage import *
 
 class Char:
-    jumping = False
+    jumping = True
     touching = False
     grab_mode = False
     did_grab = False
@@ -34,12 +34,12 @@ class Char:
     def jump(self, jump_force_x, jump_force_y):
         if self.jumping:
             return
-        self.x_speed = (jump_force_x/280)
+        self.x_speed = (jump_force_x/780)
         if self.x_speed > 0:
             self.selected_anim = 2
         else:
             self.selected_anim = 1
-        self.y_speed = -(abs(jump_force_y)/140)
+        self.y_speed = -(abs(jump_force_y)/400)
         self.jumping = True
 
     def hit_up(self):
@@ -78,7 +78,7 @@ class Char:
         self.y_speed = new_spd_y
 
     def draw_char(self):
-        self.y_speed += self.gravity
+        self.y_speed += self.gravity * self.gui.delta_time() * 160
         self.obj.x += (self.x_speed) * self.gui.delta_time() * 1300
         self.obj.y += (self.y_speed) * self.gui.delta_time() * 1300
 

@@ -39,7 +39,7 @@ class Trace:
         self.x_speed = new_spd_x
         self.y_speed = new_spd_y
 
-    def draw_trace(self, jump_force_x, jump_force_y, loops):
+    def draw_trace(self, jump_force_x, jump_force_y, loops, gui):
         if self.char.jumping or not self.char.touching:
             if not self.char.grab_mode or self.char.did_grab:
                 return
@@ -49,8 +49,8 @@ class Trace:
         self.y_speed = jump_force_y
         for i in range(loops):
             self.y_speed += 1*self.trace_distance()
-            self.obj.move_x((self.x_speed/380)*self.trace_distance())
-            self.obj.move_y((self.y_speed/180)*self.trace_distance())
+            self.obj.move_x((self.x_speed/380) * self.trace_distance())
+            self.obj.move_y((self.y_speed/180) * self.trace_distance())
 
             if self.obj.x < 0 or self.obj.x > 1024 - self.obj.width:
                 self.hit_side()
