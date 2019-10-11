@@ -11,6 +11,7 @@ class Game_itself:
     keyboard = None
     mouse = None
     gui = None
+    level = None
     GROUNDS = None
     score = None
     stone_wall = None
@@ -20,6 +21,7 @@ class Game_itself:
             self.GROUNDS.clear()
         self.score = 0
         self.gui = gui
+        self.level = level
         self.char = Char("Assets/Char.png", level, gui)
         self.char.obj.set_position(1024 / 2 - self.char.obj.width / 2, 768 / 2 - self.char.obj.height / 2)
         self.trace = Trace("Assets/Trace.png", self.char)
@@ -50,8 +52,17 @@ class Game_itself:
     def draw(self):
         self.gui.set_background_color((150, 150, 240))
         self.stone_wall.draw()
+        up = False
+        down = False
         for g in self.GROUNDS:
             g.draw_ground()
+            if g.up:
+                up = True
+            elif g.down:
+                down = True
+        #suffocated
+        if up and down:
+            self.level[0] = 2
 
         self.score += 1
         # char edit

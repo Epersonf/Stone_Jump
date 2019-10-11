@@ -11,6 +11,8 @@ class Ground:
     arrow = None
     GROUNDS = None
     gui = None
+    up = False
+    down = False
     def __init__(self, img_obj, c, d, e, img_arrow, g):
         self.obj = Sprite(img_obj)
         self.char = c
@@ -27,10 +29,15 @@ class Ground:
         if self.char.obj.collided(self.obj) and self.obj.x + self.obj.width > self.char.obj.x > self.obj.x - self.obj.width:
             if self.char.obj.y < self.obj.y - self.obj.height / 2:
                 self.char.hit_up()
+                self.down = True
             elif self.char.obj.y > self.obj.y + self.obj.height / 2:
                 self.char.hit_down()
+                self.up = True
         elif self.char.obj.collided(self.obj):
             self.char.hit_side()
+        else:
+            self.up = False
+            self.down = False
 
         #warning
         if self.obj.y < -self.obj.height:
