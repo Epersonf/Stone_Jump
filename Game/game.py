@@ -49,17 +49,32 @@ class Game_itself:
     def __init__(self, gui, level):
         self.reset(gui, level)
 
+    def grounds_collided(self, array):
+        for i in range(len(array) - 1):
+            for g in range(i+1, len(array)):
+                if array[i].obj.collided(array[g].obj):
+                    self.glue(array[i], array[g])
+
+    def glue(self, g1,  g2):
+        if g1.speed > g2.speed:
+            g1.speed = g2.speed
+        else:
+            g2.speed = g1.speed
+
     def draw(self):
         self.gui.set_background_color((150, 150, 240))
         self.stone_wall.draw()
         up = False
         down = False
-        for g in self.GROUNDS:
-            g.draw_ground()
-            if g.up:
+        self.grounds_collided(self.GROUNDS)
+        for g in range(len(self.GROUNDS)):
+            self.GROUNDS[g].draw_ground()
+            if self.GROUNDS[g].up:
                 up = True
-            elif g.down:
+            elif self.GROUNDS[g].down:
                 down = True
+        if up or down:
+            self.char.grab_mode = False
         #suffocated
         if up and down:
             self.level[0] = 2

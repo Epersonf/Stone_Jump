@@ -60,4 +60,5 @@ class Trace:
                     self.obj.x = 1024 - self.obj.width
             if self.obj.y > 768:
                 break
-            self.obj.draw()
+            if not self.char.jumping or (self.char.jumping and self.char.touching_wall):
+                self.obj.draw()

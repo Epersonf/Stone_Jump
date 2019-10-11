@@ -77,6 +77,7 @@ class Char:
         self.x_speed = new_spd_x
         self.y_speed = new_spd_y
 
+
     def draw_char(self):
         self.y_speed += self.gravity * self.gui.delta_time() * 160
         self.obj.x += (self.x_speed) * self.gui.delta_time() * 1300
