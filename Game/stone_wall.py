@@ -6,7 +6,7 @@ class Stone_wall():
     gui = None
 
     def rand_stone(self):
-        num = randint(1, 3)
+        num = randint(1, 4)
         if randint(1, 100) == 1:
             num += 1000
         return "Assets/Bricks/Brick_" + str(num) + ".png"

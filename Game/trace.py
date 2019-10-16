@@ -40,9 +40,8 @@ class Trace:
         self.y_speed = new_spd_y
 
     def draw_trace(self, jump_force_x, jump_force_y, loops, gui):
-        if self.char.jumping or not self.char.touching:
-            if not self.char.grab_mode or self.char.did_grab:
-                return
+        if not self.char.can_jump():
+            return
         self.obj.x = self.char.obj.x + self.char.obj.width/2 - self.obj.width/2
         self.obj.y = self.char.obj.y
         self.x_speed = jump_force_x
@@ -60,5 +59,4 @@ class Trace:
                     self.obj.x = 1024 - self.obj.width
             if self.obj.y > 768:
                 break
-            if not self.char.jumping or (self.char.jumping and self.char.touching_wall):
-                self.obj.draw()
+            self.obj.draw()

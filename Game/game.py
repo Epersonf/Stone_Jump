@@ -2,6 +2,7 @@ from Game.char import *
 from Game.ground import *
 from Game.trace import *
 from Game.stone_wall import *
+from Game.score import *
 
 
 class Game_itself:
@@ -14,12 +15,13 @@ class Game_itself:
     level = None
     GROUNDS = None
     score = None
+    score_counter = 0
     stone_wall = None
 
     def reset(self, gui, level):
         if self.GROUNDS != None:
             self.GROUNDS.clear()
-        self.score = 0
+        self.score_counter = 0
         self.gui = gui
         self.level = level
         self.char = Char("Assets/Char.png", level, gui)
@@ -45,6 +47,7 @@ class Game_itself:
                 self.GROUNDS[i].obj.set_position(1024 / 2 - 500, 300)
 
         self.stone_wall = Stone_wall(self.gui)
+        self.score = Score("Assets/Score_Assets/score", gui, )
 
     def __init__(self, gui, level):
         self.reset(gui, level)
@@ -61,7 +64,12 @@ class Game_itself:
         else:
             g2.speed = g1.speed
 
+    count = 0
     def draw(self):
+        self.count += self.gui.delta_time()
+        if self.count >= 0.25:
+            self.score_counter += 1
+            self.count = 0
         self.gui.set_background_color((150, 150, 240))
         self.stone_wall.draw()
         up = False
@@ -73,13 +81,13 @@ class Game_itself:
                 up = True
             elif self.GROUNDS[g].down:
                 down = True
-        if up or down:
-            self.char.grab_mode = False
-        #suffocated
         if up and down:
+            #suffocated
             self.level[0] = 2
+        elif up or down:
+            self.char.grab_mode = False
 
-        self.score += 1
         # char edit
         self.trace.draw_trace(self.mouse.get_position()[0] - self.char.obj.x, -abs(self.mouse.get_position()[1] - self.char.obj.y), 20, self.gui)
         self.char.draw_char()
+        self.score.draw(self.score_counter)

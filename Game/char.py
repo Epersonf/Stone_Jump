@@ -9,8 +9,8 @@ class Char:
 
     x_speed = 0
     y_speed = 0
-    tend_y = 230
     gravity = 0.01
+    tend_y = 2
 
     obj = None
     level_manager = None
@@ -28,8 +28,19 @@ class Char:
                      GameImage("Assets/Char_Left.png"),
                      GameImage("Assets/Char_Right.png"),
                      GameImage("Assets/Char_Left_Grabbing.png"),
-                     GameImage("Assets/Char_Right_Grabbing.png")]
+                     GameImage("Assets/Char_Right_Grabbing.png"),
+                     GameImage("Assets/Char_Left_Grabbing_Down.png"),
+                     GameImage("Assets/Char_Right_Grabbing_Down.png"),
+                     GameImage("Assets/Char_Falling.png")
+                     ]
 
+    def can_jump(self):
+        if not (not self.jumping or (self.jumping and self.touching_wall)):
+            return False
+        if self.jumping or not self.touching:
+            if not self.grab_mode or self.did_grab:
+                return False
+        return True
 
     def jump(self, jump_force_x, jump_force_y):
         if self.jumping:
@@ -79,7 +90,8 @@ class Char:
 
 
     def draw_char(self):
-        self.y_speed += self.gravity * self.gui.delta_time() * 160
+        if self.y_speed <= self.tend_y:
+            self.y_speed += self.gravity * self.gui.delta_time() * 160
         self.obj.x += (self.x_speed) * self.gui.delta_time() * 1300
         self.obj.y += (self.y_speed) * self.gui.delta_time() * 1300
 
@@ -89,7 +101,7 @@ class Char:
         else:
             self.grab_mode = False
 
-        #reflection
+        #reflection window border
         if self.obj.x < 0 or self.obj.x > 1024 - self.obj.width:
             self.hit_side()
             if self.obj.x < 0:
@@ -102,6 +114,9 @@ class Char:
         #gameover
         if self.obj.y >= 768:
             self.level_manager[0] = 2
+
+        if self.jumping and not self.touching_wall and self.y_speed > 0:
+            self.selected_anim = 7
 
         self.anim[self.selected_anim].x = self.obj.x
         self.anim[self.selected_anim].y = self.obj.y

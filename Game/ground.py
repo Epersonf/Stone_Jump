@@ -30,8 +30,10 @@ class Ground:
         self.obj.y += (self.speed) * self.gui.delta_time() * 1300
 
         #collision
-        marginY = (self.obj.height/100)*10
+        marginY = (self.obj.height/100)*30
         marginX = 5
+        self.up = False
+        self.down = False
         if self.obj.x - marginX < self.char.obj.x < self.obj.x + self.obj.width - self.char.obj.width/2 + marginX:
             if self.obj.collided(self.char.obj) and self.obj.y - marginY < self.char.obj.y + self.char.obj.height < self.obj.y + marginY:
                 self.char.y_speed = self.speed
@@ -48,6 +50,8 @@ class Ground:
             self.char.y_speed = self.speed
             self.char.hit_up()
             self.down = True
+            if not self.obj.collided(self.char.obj):
+                self.char.jumping = True
         elif self.obj.collided(self.char.obj):
             if self.anim is None:
                 if self.obj.x + self.obj.width/2 < self.char.obj.x + self.obj.width/2:
@@ -56,6 +60,8 @@ class Ground:
                     self.anim = 4
             self.char.x_speed = -self.char.x_speed/2
             if self.char.grab_mode:
+                if self.char.obj.y < self.obj.y:
+                    self.char.obj.y = self.obj.y
                 if self.prev_x is None:
                     self.prev_x = self.char.obj.x
                 else:

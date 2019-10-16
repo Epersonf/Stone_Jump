@@ -22,7 +22,7 @@ class Gameover:
         self.no = Btn("Assets/Btns/noButton.png", "Assets/Btns/noBlur.png", gui, gui.width / 2 + 170, gui.height / 2 + 200)
         self.mouse = gui.get_mouse()
         self.keyboard = gui.get_keyboard()
-        self.bg = GameImage("Assets/menuBackground.png")
+        self.bg = GameImage("Assets/gameoverBackground.png")
         self.bg.set_position(0, 0)
         self.try_again = GameImage("Assets/Try_Again.png")
         self.try_again.set_position(gui.width/2 - self.try_again.width/2, gui.height/2 - 100)
