@@ -20,11 +20,15 @@ class Ground:
         self.GROUNDS = e
         self.arrow = Sprite(img_arrow)
         self.gui = g
+        self.min_speed = 1
+        self.max_speed = 100
 
 
     prev_x = None
     dif_y = None
     anim = None
+    min_speed = 1
+    max_speed = 100
     def draw_ground(self):
 
         self.obj.y += (self.speed) * self.gui.delta_time() * 1300
@@ -101,7 +105,7 @@ class Ground:
             while collided:
                 self.obj.x = randint(0, 1024 - self.obj.width)
                 self.obj.y = -300
-                self.speed = 0.02 + randint(1,100)/1000
+                self.speed = 0.02 + randint(self.min_speed, self.max_speed)/1000
                 collided = False
                 for i in range(len(self.GROUNDS)):
                     if self.obj.collided(self.GROUNDS[i].obj) and self.obj != self.GROUNDS[i].obj:

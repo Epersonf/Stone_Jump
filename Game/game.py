@@ -21,6 +21,7 @@ class Game_itself:
     def reset(self, gui, level):
         if self.GROUNDS != None:
             self.GROUNDS.clear()
+        self.needed = 0.1
         self.score_counter = 0
         self.gui = gui
         self.level = level
@@ -65,11 +66,17 @@ class Game_itself:
             g2.speed = g1.speed
 
     count = 0
+    needed = 0.1
     def draw(self):
         self.count += self.gui.delta_time()
-        if self.count >= 0.25:
+        if self.count >= self.needed:
             self.score_counter += 1
             self.count = 0
+            if self.score_counter % 500 == 0:
+                self.needed *= 0.95
+                for c in self.GROUNDS:
+                    c.min_speed += 20 * 2000/self.score_counter
+                    c.max_speed += 5 * 2000/self.score_counter
         self.gui.set_background_color((150, 150, 240))
         self.stone_wall.draw()
         up = False
