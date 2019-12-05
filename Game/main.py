@@ -28,6 +28,11 @@ while True:
         #gameover
         if (sound.is_playing()):
             sound.stop()
+        scoreFinal = game.score_counter
+        score = game.score
+        score.x = 415
+        score.y = 450
         gui.set_background_color((0, 0, 0))
         gameover_menu.draw()
+        score.draw(scoreFinal)
     gui.update()
