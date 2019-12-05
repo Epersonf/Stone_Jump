@@ -29,8 +29,6 @@ class Char:
                      GameImage("Assets/Char_Right.png"),
                      GameImage("Assets/Char_Left_Grabbing.png"),
                      GameImage("Assets/Char_Right_Grabbing.png"),
-                     GameImage("Assets/Char_Left_Grabbing_Down.png"),
-                     GameImage("Assets/Char_Right_Grabbing_Down.png"),
                      GameImage("Assets/Char_Falling.png")
                      ]
 
@@ -102,12 +100,12 @@ class Char:
             self.grab_mode = False
 
         #reflection window border
-        if self.obj.x < 0 or self.obj.x > 1024 - self.obj.width:
+        if self.obj.x < 0 or self.obj.x > self.gui.width - self.obj.width - 20:
             self.hit_side()
             if self.obj.x < 0:
                 self.obj.x = 0
             else:
-                self.obj.x = 1024 - self.obj.width
+                self.obj.x = self.gui.width - self.obj.width - 20
         else:
             self.touching_wall = False
 
@@ -116,7 +114,7 @@ class Char:
             self.level_manager[0] = 2
 
         if self.jumping and not self.touching_wall and self.y_speed > 0:
-            self.selected_anim = 7
+            self.selected_anim = 5
 
         self.anim[self.selected_anim].x = self.obj.x
         self.anim[self.selected_anim].y = self.obj.y

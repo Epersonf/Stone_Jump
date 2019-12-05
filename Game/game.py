@@ -3,7 +3,7 @@ from Game.ground import *
 from Game.trace import *
 from Game.stone_wall import *
 from Game.score import *
-
+from Game.skull import *
 
 class Game_itself:
 
@@ -17,6 +17,7 @@ class Game_itself:
     score = None
     score_counter = 0
     stone_wall = None
+    skull = None
 
     def reset(self, gui, level):
         if self.GROUNDS != None:
@@ -28,6 +29,7 @@ class Game_itself:
         self.char = Char("Assets/Char.png", level, gui)
         self.char.obj.set_position(1024 / 2 - self.char.obj.width / 2, 768 / 2 - self.char.obj.height / 2)
         self.trace = Trace("Assets/Trace.png", self.char)
+        self.skull = Skull(gui, self.char)
 
         self.keyboard = gui.get_keyboard()
         self.mouse = gui.get_mouse()
@@ -96,5 +98,6 @@ class Game_itself:
 
         # char edit
         self.trace.draw_trace(self.mouse.get_position()[0] - self.char.obj.x, -abs(self.mouse.get_position()[1] - self.char.obj.y), 20, self.gui)
+        self.skull.draw(self.score_counter)
         self.char.draw_char()
         self.score.draw(self.score_counter)
